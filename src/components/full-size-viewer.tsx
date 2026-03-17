@@ -20,7 +20,7 @@ export function FullSizeViewer({
   onBack,
 }: FullSizeViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { downloadImage } = useLutEngine(canvasRef, image, preset)
+  const { downloadImage, showOriginal } = useLutEngine(canvasRef, image, preset)
 
   const lutName = preset?.name ?? 'Original'
   const filename = `autolut-${(preset?.id ?? 'original')}.png`
@@ -63,11 +63,19 @@ export function FullSizeViewer({
           </Button>
         </div>
       </div>
-      <div className="overflow-auto rounded-lg border bg-muted/30">
+      <div className="relative overflow-auto rounded-lg border bg-muted/30">
         <canvas
           ref={canvasRef}
           className="mx-auto block max-h-[80vh] max-w-full object-contain"
+          onPointerDown={() => preset && showOriginal(true)}
+          onPointerUp={() => preset && showOriginal(false)}
+          onPointerLeave={() => preset && showOriginal(false)}
         />
+        {preset && (
+          <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80 select-none">
+            Hold to compare
+          </span>
+        )}
       </div>
     </div>
   )

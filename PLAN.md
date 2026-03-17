@@ -11,6 +11,6 @@ Show user 25 previews with preset LUTs. User can choose up to 5 best LUTs. Then 
 
 - Improve preview quality. Performance is still great - DONE
 - On mobile refine button should float - DONE
+- Add comparison to original in full photo view - DONE
 - Preserve Original LUT when adding modified ones
-- Add comparison to original in full photo view
 - Add elimination round

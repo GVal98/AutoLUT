@@ -28,6 +28,12 @@ export function useLutEngine(
     engine.render()
   }, [image, preset])
 
+  const showOriginal = useCallback((show: boolean) => {
+    const engine = engineRef.current
+    if (!engine) return
+    engine.render(show ? 0.0 : 1.0)
+  }, [])
+
   const downloadImage = useCallback(
     async (filename: string, format: 'image/png' | 'image/jpeg' = 'image/png') => {
       const engine = engineRef.current
@@ -43,5 +49,5 @@ export function useLutEngine(
     [],
   )
 
-  return { engineRef, downloadImage }
+  return { engineRef, downloadImage, showOriginal }
 }
