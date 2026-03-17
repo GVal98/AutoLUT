@@ -29,7 +29,7 @@ export function usePreviewRenderer(
       prevUrlsRef.current = []
 
       try {
-        const thumb = await createThumbnail(image!, 300)
+        const thumb = await createThumbnail(image!, 600)
         const engine = new LutEngine()
         engine.setImage(thumb, thumb.width, thumb.height)
 
@@ -39,7 +39,7 @@ export function usePreviewRenderer(
         // Original (no LUT)
         engine.setLut(null)
         engine.render()
-        const origBlob = await engine.toBlob('image/jpeg', 0.85)
+        const origBlob = await engine.toBlob('image/jpeg', 0.9)
         const origUrl = URL.createObjectURL(origBlob)
         map.set('original', origUrl)
         urls.push(origUrl)
@@ -59,7 +59,7 @@ export function usePreviewRenderer(
           if (cancelled) break
           engine.setLut(preset)
           engine.render()
-          const blob = await engine.toBlob('image/jpeg', 0.85)
+          const blob = await engine.toBlob('image/jpeg', 0.9)
           const url = URL.createObjectURL(blob)
           map.set(preset.id, url)
           urls.push(url)

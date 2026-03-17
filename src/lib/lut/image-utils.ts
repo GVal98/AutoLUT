@@ -16,7 +16,7 @@ export async function loadImageFromFile(file: File): Promise<HTMLImageElement> {
 
 export async function createThumbnail(
   source: ImageBitmapSource,
-  maxDim = 300,
+  maxDim = 600,
 ): Promise<ImageBitmap> {
   const bitmap = source instanceof ImageBitmap ? source : await createImageBitmap(source)
   const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height))
@@ -26,7 +26,7 @@ export async function createThumbnail(
   const thumb = await createImageBitmap(bitmap, {
     resizeWidth: w,
     resizeHeight: h,
-    resizeQuality: 'medium',
+    resizeQuality: 'high',
   })
   if (source instanceof ImageBitmap && source !== bitmap) bitmap.close()
   return thumb

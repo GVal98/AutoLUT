@@ -32,7 +32,7 @@ export function useLutEngine(
     async (filename: string, format: 'image/png' | 'image/jpeg' = 'image/png') => {
       const engine = engineRef.current
       if (!engine) return
-      const blob = await engine.toBlob(format, 0.92)
+      const blob = await engine.toBlob(format, 1.0)
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
