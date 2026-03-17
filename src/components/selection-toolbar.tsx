@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 interface SelectionToolbarProps {
   round: number
   selectedCount: number
-  maxSelections: number
   canGoBack: boolean
   canRefine: boolean
   loading: boolean
@@ -15,7 +14,6 @@ interface SelectionToolbarProps {
 export function SelectionToolbar({
   round,
   selectedCount,
-  maxSelections,
   canGoBack,
   canRefine,
   loading,
@@ -35,7 +33,7 @@ export function SelectionToolbar({
           Round {round}
         </span>
         <span className="text-sm text-muted-foreground">
-          {selectedCount}/{maxSelections} selected
+          {selectedCount} selected
         </span>
       </div>
       <Button

@@ -198,7 +198,6 @@ function App() {
         <SelectionFooter
           round={round}
           selectedCount={selectedIds.size}
-          maxSelections={5}
           canGoBack={canGoBack}
           canRefine={selectedIds.size > 0}
           loading={loading}

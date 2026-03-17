@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 interface SelectionFooterProps {
   round: number
   selectedCount: number
-  maxSelections: number
   canGoBack: boolean
   canRefine: boolean
   loading: boolean
@@ -18,7 +17,6 @@ interface SelectionFooterProps {
 export function SelectionFooter({
   round,
   selectedCount,
-  maxSelections,
   canGoBack,
   canRefine,
   loading,
@@ -42,7 +40,7 @@ export function SelectionFooter({
             Round {round}
           </span>
           <span className="text-sm text-muted-foreground">
-            {selectedCount}/{maxSelections} selected
+            {selectedCount} selected
           </span>
         </div>
         <div className="flex items-center gap-2">

@@ -20,7 +20,7 @@ export function useRefinement(initialPresets: LutPreset[]) {
         const next = new Set(prev)
         if (next.has(id)) {
           next.delete(id)
-        } else if (next.size < 5) {
+        } else {
           next.add(id)
         }
         return next
@@ -41,7 +41,7 @@ export function useRefinement(initialPresets: LutPreset[]) {
     const variations: LutPreset[] = []
     for (const parent of selectedPresets) {
       variations.push({ ...parent, isParent: true })
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 18; i++) {
         variations.push(mutateLut(parent, i, nextRound))
       }
     }
