@@ -6,4 +6,5 @@ export interface LutPreset {
   data: Float32Array
   parentId?: string
   round?: number
+  isParent?: boolean
 }

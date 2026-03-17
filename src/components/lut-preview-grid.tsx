@@ -48,6 +48,7 @@ export function LutPreviewGrid({
                 : undefined
             }
             selectable
+            isParent={preset.isParent}
             onClick={() => onToggleSelect(preset.id)}
             onViewFullsize={() => onViewFullsize(preset.id)}
           />

@@ -40,6 +40,7 @@ export function useRefinement(initialPresets: LutPreset[]) {
     const selectedPresets = presets.filter((p) => selectedIds.has(p.id))
     const variations: LutPreset[] = []
     for (const parent of selectedPresets) {
+      variations.push({ ...parent, isParent: true })
       for (let i = 0; i < 5; i++) {
         variations.push(mutateLut(parent, i, nextRound))
       }

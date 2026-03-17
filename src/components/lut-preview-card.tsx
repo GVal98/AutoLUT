@@ -10,6 +10,7 @@ interface LutPreviewCardProps {
   selected: boolean
   selectionIndex?: number
   selectable: boolean
+  isParent?: boolean
   onClick: () => void
   onViewFullsize?: () => void
 }
@@ -21,6 +22,7 @@ export function LutPreviewCard({
   selected,
   selectionIndex,
   selectable,
+  isParent,
   onClick,
   onViewFullsize,
 }: LutPreviewCardProps) {
@@ -68,6 +70,14 @@ export function LutPreviewCard({
         >
           <Eye className="size-3.5" />
         </button>
+      )}
+
+      {isParent && (
+        <div className="absolute bottom-8 left-2">
+          <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white">
+            Previous pick
+          </span>
+        </div>
       )}
 
       <div className="px-3 py-2">
