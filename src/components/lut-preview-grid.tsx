@@ -1,6 +1,5 @@
 import type { LutPreset } from '@/lib/lut/types'
 import { LutPreviewCard } from './lut-preview-card'
-import { SelectionToolbar } from './selection-toolbar'
 
 interface LutPreviewGridProps {
   presets: LutPreset[]
@@ -8,11 +7,8 @@ interface LutPreviewGridProps {
   loading: boolean
   selectedIds: Set<string>
   round: number
-  canGoBack: boolean
   onToggleSelect: (id: string) => void
   onViewFullsize: (id: string | null) => void
-  onRefine: () => void
-  onGoBack: () => void
 }
 
 export function LutPreviewGrid({
@@ -21,26 +17,13 @@ export function LutPreviewGrid({
   loading,
   selectedIds,
   round,
-  canGoBack,
   onToggleSelect,
   onViewFullsize,
-  onRefine,
-  onGoBack,
 }: LutPreviewGridProps) {
   const selectionOrder = [...selectedIds]
 
   return (
     <div>
-      <SelectionToolbar
-        round={round}
-        selectedCount={selectedIds.size}
-        maxSelections={5}
-        canGoBack={canGoBack}
-        canRefine={selectedIds.size > 0}
-        loading={loading}
-        onGoBack={onGoBack}
-        onRefine={onRefine}
-      />
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {round === 1 && (
           <LutPreviewCard

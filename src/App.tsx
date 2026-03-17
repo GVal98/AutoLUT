@@ -6,8 +6,7 @@ import { PRESET_LUTS } from '@/lib/lut/presets'
 import { PhotoUpload } from '@/components/photo-upload'
 import { LutPreviewGrid } from '@/components/lut-preview-grid'
 import { FullSizeViewer } from '@/components/full-size-viewer'
-import { Button } from '@/components/ui/button'
-import { ImagePlus } from 'lucide-react'
+import { SelectionFooter } from '@/components/selection-footer'
 
 type ViewMode = 'upload' | 'selection' | 'fullsize'
 
@@ -91,19 +90,13 @@ function App() {
 
   return (
     <div className="mx-auto min-h-screen max-w-7xl px-4 py-8">
-      <header className="mb-8 flex items-center justify-between">
+      <header className="mb-8">
         <h1
           className="cursor-pointer text-2xl font-bold tracking-tight"
           onClick={handleNewPhoto}
         >
           AutoLUT
         </h1>
-        {viewMode !== 'upload' && (
-          <Button variant="outline" size="sm" onClick={handleNewPhoto}>
-            <ImagePlus className="size-3.5" data-icon="inline-start" />
-            New Photo
-          </Button>
-        )}
       </header>
 
       {viewMode === 'upload' && (
@@ -122,18 +115,17 @@ function App() {
       )}
 
       {viewMode === 'selection' && image && (
-        <LutPreviewGrid
-          presets={presets}
-          previews={previews}
-          loading={loading}
-          selectedIds={selectedIds}
-          round={round}
-          canGoBack={canGoBack}
-          onToggleSelect={toggleSelection}
-          onViewFullsize={handleViewFullsize}
-          onRefine={refine}
-          onGoBack={goBack}
-        />
+        <div className="pb-20">
+          <LutPreviewGrid
+            presets={presets}
+            previews={previews}
+            loading={loading}
+            selectedIds={selectedIds}
+            round={round}
+            onToggleSelect={toggleSelection}
+            onViewFullsize={handleViewFullsize}
+          />
+        </div>
       )}
 
       {viewMode === 'fullsize' && image && (
@@ -143,6 +135,19 @@ function App() {
           selected={isFullsizeSelected}
           onToggleSelect={handleFullsizeToggleSelect}
           onBack={handleBackToSelection}
+        />
+      )}
+      {viewMode === 'selection' && (
+        <SelectionFooter
+          round={round}
+          selectedCount={selectedIds.size}
+          maxSelections={5}
+          canGoBack={canGoBack}
+          canRefine={selectedIds.size > 0}
+          loading={loading}
+          onGoBack={goBack}
+          onRefine={refine}
+          onNewPhoto={handleNewPhoto}
         />
       )}
     </div>
