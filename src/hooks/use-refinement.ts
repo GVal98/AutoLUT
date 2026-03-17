@@ -29,8 +29,8 @@ export function useRefinement(initialPresets: LutPreset[]) {
     [],
   )
 
-  const refine = useCallback(() => {
-    if (selectedIds.size === 0) return
+  const refine = useCallback((): LutPreset[] => {
+    if (selectedIds.size === 0) return presets
 
     const nextRound = round + 1
     // Save current state to history
@@ -49,6 +49,7 @@ export function useRefinement(initialPresets: LutPreset[]) {
     setPresets(variations)
     setSelectedIds(new Set())
     setRound(nextRound)
+    return variations
   }, [round, presets, selectedIds])
 
   const goBack = useCallback(() => {

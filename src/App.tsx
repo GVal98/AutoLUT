@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useImageUpload } from '@/hooks/use-image-upload'
 import { usePreviewRenderer } from '@/hooks/use-preview-renderer'
 import { useRefinement } from '@/hooks/use-refinement'
@@ -41,7 +41,6 @@ function App() {
     toggleSelection,
     refine,
     resetToRound1,
-    setSelection,
   } = useRefinement(PRESET_LUTS)
 
   const elimination = useElimination()
@@ -86,12 +85,12 @@ function App() {
     setViewMode('elimination')
   }, [elimination, presets])
 
-  // Auto-start elimination after refine (round goes from 1 to 2)
-  useEffect(() => {
-    if (round > 1 && viewMode === 'selection') {
-      handleStartElimination()
-    }
-  }, [round]) // eslint-disable-line react-hooks/exhaustive-deps
+  const handleRefine = useCallback(() => {
+    const refined = refine()
+    // Go straight to elimination after refinement
+    elimination.startElimination(refined)
+    setViewMode('elimination')
+  }, [refine, elimination])
 
   const fullsizePreset = useMemo(
     () => presets.find((p) => p.id === fullsizePresetId) ?? null,
@@ -199,7 +198,7 @@ function App() {
           hasRefined={round > 1}
           loading={loading}
           presetsCount={presets.length}
-          onRefine={refine}
+          onRefine={handleRefine}
           onStartElimination={handleStartElimination}
         />
       )}
