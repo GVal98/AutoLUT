@@ -30,7 +30,7 @@ export function SelectionFooter({
 }: SelectionFooterProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           {canGoBack && (
             <Button variant="ghost" size="sm" onClick={onGoBack}>
