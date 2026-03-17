@@ -1,14 +1,16 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useImageUpload } from '@/hooks/use-image-upload'
 import { usePreviewRenderer } from '@/hooks/use-preview-renderer'
 import { useRefinement } from '@/hooks/use-refinement'
 import { useElimination } from '@/hooks/use-elimination'
 import { PRESET_LUTS } from '@/lib/lut/presets'
+import { ImagePlus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { PhotoUpload } from '@/components/photo-upload'
 import { LutPreviewGrid } from '@/components/lut-preview-grid'
 import { FullSizeViewer } from '@/components/full-size-viewer'
 import { SelectionFooter } from '@/components/selection-footer'
-import { EliminationCullGrid } from '@/components/elimination-cull-grid'
+import { EliminationGrid } from '@/components/elimination-grid'
 import { TournamentMatchup } from '@/components/tournament-matchup'
 import { TournamentWinner } from '@/components/tournament-winner'
 import { EliminationFooter } from '@/components/elimination-footer'
@@ -36,10 +38,8 @@ function App() {
     round,
     presets,
     selectedIds,
-    canGoBack,
     toggleSelection,
     refine,
-    goBack,
     resetToRound1,
     setSelection,
   } = useRefinement(PRESET_LUTS)
@@ -86,18 +86,12 @@ function App() {
     setViewMode('elimination')
   }, [elimination, presets])
 
-  const handleEliminationCancel = useCallback(() => {
-    elimination.cancel()
-    setViewMode('selection')
-  }, [elimination])
-
-  const handleEliminationWinnerBack = useCallback(() => {
-    if (elimination.winner) {
-      setSelection(new Set([elimination.winner.id]))
+  // Auto-start elimination after refine (round goes from 1 to 2)
+  useEffect(() => {
+    if (round > 1 && viewMode === 'selection') {
+      handleStartElimination()
     }
-    elimination.cancel()
-    setViewMode('selection')
-  }, [elimination, setSelection])
+  }, [round]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const fullsizePreset = useMemo(
     () => presets.find((p) => p.id === fullsizePresetId) ?? null,
@@ -116,13 +110,19 @@ function App() {
 
   return (
     <div className="mx-auto min-h-screen max-w-7xl px-4 py-8">
-      <header className="mb-8">
+      <header className="mb-8 flex items-center justify-between">
         <h1
           className="cursor-pointer text-2xl font-bold tracking-tight"
           onClick={handleNewPhoto}
         >
           AutoLUT
         </h1>
+        {viewMode !== 'upload' && (
+          <Button variant="outline" size="sm" onClick={handleNewPhoto}>
+            <ImagePlus className="size-3.5" data-icon="inline-start" />
+            New Photo
+          </Button>
+        )}
       </header>
 
       {viewMode === 'upload' && (
@@ -164,12 +164,12 @@ function App() {
         />
       )}
 
-      {viewMode === 'elimination' && image && elimination.phase === 'cull' && elimination.cull && (
-        <EliminationCullGrid
-          presets={elimination.cull.candidates}
+      {viewMode === 'elimination' && image && elimination.phase === 'eliminate' && elimination.eliminate && (
+        <EliminationGrid
+          presets={elimination.eliminate.candidates}
           previews={previews}
           loading={loading}
-          eliminatedIds={elimination.cull.eliminatedIds}
+          eliminatedIds={elimination.eliminate.eliminatedIds}
           onToggleEliminate={elimination.toggleEliminate}
         />
       )}
@@ -181,7 +181,6 @@ function App() {
           right={elimination.tournament.matchup[1]}
           currentRound={elimination.tournament.currentRound}
           matchIndex={elimination.tournament.matchIndex}
-          totalMatchups={elimination.tournament.totalMatchups}
           onPick={elimination.pickWinner}
         />
       )}
@@ -190,45 +189,38 @@ function App() {
         <TournamentWinner
           image={image}
           winner={elimination.winner}
-          onBack={handleEliminationWinnerBack}
         />
       )}
 
       {viewMode === 'selection' && (
         <SelectionFooter
-          round={round}
           selectedCount={selectedIds.size}
-          canGoBack={canGoBack}
           canRefine={selectedIds.size > 0}
+          hasRefined={round > 1}
           loading={loading}
           presetsCount={presets.length}
-          onGoBack={goBack}
           onRefine={refine}
-          onNewPhoto={handleNewPhoto}
           onStartElimination={handleStartElimination}
         />
       )}
 
-      {viewMode === 'elimination' && elimination.phase === 'cull' && elimination.cull && (
+      {viewMode === 'elimination' && elimination.phase === 'eliminate' && elimination.eliminate && (
         <EliminationFooter
-          phase="cull"
-          remainingCount={elimination.cull.candidates.length - elimination.cull.eliminatedIds.size}
-          totalCount={elimination.cull.candidates.length}
+          phase="eliminate"
+          remainingCount={elimination.eliminate.candidates.length - elimination.eliminate.eliminatedIds.size}
+          totalCount={elimination.eliminate.candidates.length}
           canStartTournament={
-            elimination.cull.candidates.length - elimination.cull.eliminatedIds.size >= 2
+            elimination.eliminate.candidates.length - elimination.eliminate.eliminatedIds.size >= 2
           }
-          onConfirmCull={elimination.confirmCull}
-          onCancel={handleEliminationCancel}
+          onConfirmElimination={elimination.confirmElimination}
         />
       )}
 
       {viewMode === 'elimination' && elimination.phase === 'tournament' && elimination.tournament && (
         <EliminationFooter
           phase="tournament"
-          currentRound={elimination.tournament.currentRound}
           matchIndex={elimination.tournament.matchIndex}
           totalMatchups={elimination.tournament.totalMatchups}
-          onCancel={handleEliminationCancel}
         />
       )}
     </div>

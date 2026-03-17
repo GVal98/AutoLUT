@@ -8,7 +8,6 @@ interface TournamentMatchupProps {
   right: LutPreset
   currentRound: number
   matchIndex: number
-  totalMatchups: number
   onPick: (id: string) => void
 }
 
@@ -22,7 +21,7 @@ function MatchupCanvas({
   onPick: () => void
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { showOriginal } = useLutEngine(canvasRef, image, preset)
+  useLutEngine(canvasRef, image, preset)
 
   return (
     <button
@@ -33,13 +32,7 @@ function MatchupCanvas({
         <canvas
           ref={canvasRef}
           className="block max-h-[38vh] max-w-full md:max-h-none md:w-full"
-          onPointerDown={() => showOriginal(true)}
-          onPointerUp={() => showOriginal(false)}
-          onPointerLeave={() => showOriginal(false)}
         />
-        <span className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] text-white/80 opacity-0 transition-opacity select-none group-hover:opacity-100">
-          Hold to compare
-        </span>
       </div>
       <span className="text-sm font-medium">{preset.name}</span>
     </button>
@@ -52,7 +45,6 @@ export function TournamentMatchup({
   right,
   currentRound,
   matchIndex,
-  totalMatchups,
   onPick,
 }: TournamentMatchupProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -64,12 +56,6 @@ export function TournamentMatchup({
 
   return (
     <div ref={containerRef} className="flex flex-col gap-4 pb-20">
-      <div className="text-center text-sm text-muted-foreground">
-        Match {matchIndex + 1} of {totalMatchups} &middot; Round {currentRound}
-      </div>
-      <p className="text-center text-sm text-muted-foreground">
-        Tap the one you prefer
-      </p>
       <div className="flex flex-col gap-4 md:flex-row">
         <MatchupCanvas
           key={left.id}

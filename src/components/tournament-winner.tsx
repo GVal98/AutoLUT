@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Download, ArrowLeft, Trophy } from 'lucide-react'
+import { Download, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLutEngine } from '@/hooks/use-lut-engine'
 import type { LutPreset } from '@/lib/lut/types'
@@ -7,13 +7,11 @@ import type { LutPreset } from '@/lib/lut/types'
 interface TournamentWinnerProps {
   image: HTMLImageElement
   winner: LutPreset
-  onBack: () => void
 }
 
 export function TournamentWinner({
   image,
   winner,
-  onBack,
 }: TournamentWinnerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { downloadImage, showOriginal } = useLutEngine(canvasRef, image, winner)
@@ -56,12 +54,6 @@ export function TournamentWinner({
         <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80 select-none">
           Hold to compare
         </span>
-      </div>
-      <div className="flex justify-center">
-        <Button variant="outline" onClick={onBack}>
-          <ArrowLeft className="size-3.5" data-icon="inline-start" />
-          Back to selection
-        </Button>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import type { LutPreset } from '@/lib/lut/types'
 import { LutPreviewCard } from './lut-preview-card'
 
-interface EliminationCullGridProps {
+interface EliminationGridProps {
   presets: LutPreset[]
   previews: Map<string, string>
   loading: boolean
@@ -9,18 +9,15 @@ interface EliminationCullGridProps {
   onToggleEliminate: (id: string) => void
 }
 
-export function EliminationCullGrid({
+export function EliminationGrid({
   presets,
   previews,
   loading,
   eliminatedIds,
   onToggleEliminate,
-}: EliminationCullGridProps) {
+}: EliminationGridProps) {
   return (
     <div className="pb-20">
-      <p className="mb-4 text-sm text-muted-foreground">
-        Tap LUTs to eliminate them. At least 2 must remain.
-      </p>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {presets.map((preset) => (
           <LutPreviewCard

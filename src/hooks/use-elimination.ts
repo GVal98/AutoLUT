@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react'
 import type { LutPreset } from '@/lib/lut/types'
 
-type Phase = 'idle' | 'cull' | 'tournament' | 'winner'
+type Phase = 'idle' | 'eliminate' | 'tournament' | 'winner'
 
-interface CullState {
+interface EliminateState {
   candidates: LutPreset[]
   eliminatedIds: Set<string>
 }
@@ -20,7 +20,7 @@ interface TournamentState {
 
 interface EliminationState {
   phase: Phase
-  cull: CullState | null
+  eliminate: EliminateState | null
   tournament: TournamentState | null
   winner: LutPreset | null
 }
@@ -60,15 +60,15 @@ function buildTournamentState(contestants: LutPreset[], round: number): Tourname
 export function useElimination() {
   const [state, setState] = useState<EliminationState>({
     phase: 'idle',
-    cull: null,
+    eliminate: null,
     tournament: null,
     winner: null,
   })
 
   const startElimination = useCallback((presets: LutPreset[]) => {
     setState({
-      phase: 'cull',
-      cull: {
+      phase: 'eliminate',
+      eliminate: {
         candidates: presets,
         eliminatedIds: new Set(),
       },
@@ -79,38 +79,38 @@ export function useElimination() {
 
   const toggleEliminate = useCallback((id: string) => {
     setState((prev) => {
-      if (!prev.cull) return prev
-      const next = new Set(prev.cull.eliminatedIds)
+      if (!prev.eliminate) return prev
+      const next = new Set(prev.eliminate.eliminatedIds)
       if (next.has(id)) {
         next.delete(id)
       } else {
         // Don't allow eliminating if it would leave fewer than 2
-        const remaining = prev.cull.candidates.length - next.size - 1
+        const remaining = prev.eliminate.candidates.length - next.size - 1
         if (remaining < 2) return prev
         next.add(id)
       }
       return {
         ...prev,
-        cull: { ...prev.cull, eliminatedIds: next },
+        eliminate: { ...prev.eliminate, eliminatedIds: next },
       }
     })
   }, [])
 
-  const confirmCull = useCallback(() => {
+  const confirmElimination = useCallback(() => {
     setState((prev) => {
-      if (!prev.cull) return prev
-      const survivors = prev.cull.candidates.filter(
-        (p) => !prev.cull!.eliminatedIds.has(p.id),
+      if (!prev.eliminate) return prev
+      const survivors = prev.eliminate.candidates.filter(
+        (p) => !prev.eliminate!.eliminatedIds.has(p.id),
       )
       if (survivors.length < 2) return prev
 
       if (survivors.length === 1) {
-        return { phase: 'winner', cull: null, tournament: null, winner: survivors[0] }
+        return { phase: 'winner', eliminate: null, tournament: null, winner: survivors[0] }
       }
 
       return {
         phase: 'tournament',
-        cull: null,
+        eliminate: null,
         tournament: buildTournamentState(survivors, 1),
         winner: null,
       }
@@ -147,7 +147,7 @@ export function useElimination() {
       if (roundWinners.length === 1) {
         return {
           phase: 'winner',
-          cull: null,
+          eliminate: null,
           tournament: null,
           winner: roundWinners[0],
         }
@@ -162,17 +162,17 @@ export function useElimination() {
   }, [])
 
   const cancel = useCallback(() => {
-    setState({ phase: 'idle', cull: null, tournament: null, winner: null })
+    setState({ phase: 'idle', eliminate: null, tournament: null, winner: null })
   }, [])
 
   return {
     phase: state.phase,
-    cull: state.cull,
+    eliminate: state.eliminate,
     tournament: state.tournament,
     winner: state.winner,
     startElimination,
     toggleEliminate,
-    confirmCull,
+    confirmElimination,
     pickWinner,
     cancel,
   }
