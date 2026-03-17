@@ -1,4 +1,4 @@
-import { ArrowLeft, ImagePlus, Sparkles } from 'lucide-react'
+import { ArrowLeft, ImagePlus, Sparkles, Swords } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface SelectionFooterProps {
@@ -8,9 +8,11 @@ interface SelectionFooterProps {
   canGoBack: boolean
   canRefine: boolean
   loading: boolean
+  presetsCount: number
   onGoBack: () => void
   onRefine: () => void
   onNewPhoto: () => void
+  onStartElimination: () => void
 }
 
 export function SelectionFooter({
@@ -20,9 +22,11 @@ export function SelectionFooter({
   canGoBack,
   canRefine,
   loading,
+  presetsCount,
   onGoBack,
   onRefine,
   onNewPhoto,
+  onStartElimination,
 }: SelectionFooterProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/80 backdrop-blur-md">
@@ -49,6 +53,15 @@ export function SelectionFooter({
           >
             <Sparkles className="size-3.5" data-icon="inline-start" />
             Refine
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={presetsCount < 2 || loading}
+            onClick={onStartElimination}
+          >
+            <Swords className="size-3.5" data-icon="inline-start" />
+            Eliminate
           </Button>
           <Button variant="outline" size="sm" onClick={onNewPhoto}>
             <ImagePlus className="size-3.5" data-icon="inline-start" />

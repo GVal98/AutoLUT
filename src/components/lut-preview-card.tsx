@@ -1,4 +1,4 @@
-import { Eye } from 'lucide-react'
+import { Eye, X } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
@@ -11,6 +11,7 @@ interface LutPreviewCardProps {
   selectionIndex?: number
   selectable: boolean
   isParent?: boolean
+  eliminated?: boolean
   onClick: () => void
   onViewFullsize?: () => void
 }
@@ -23,6 +24,7 @@ export function LutPreviewCard({
   selectionIndex,
   selectable,
   isParent,
+  eliminated,
   onClick,
   onViewFullsize,
 }: LutPreviewCardProps) {
@@ -31,10 +33,11 @@ export function LutPreviewCard({
       className={cn(
         'group relative cursor-pointer overflow-hidden p-0 transition-all hover:ring-2 hover:ring-primary/50',
         selected && 'ring-2 ring-primary',
+        eliminated && 'opacity-40 grayscale',
       )}
       onClick={onClick}
     >
-      <div className="overflow-hidden bg-muted">
+      <div className="relative overflow-hidden bg-muted">
         {loading || !previewUrl ? (
           <Skeleton className="aspect-[4/3] w-full rounded-none" />
         ) : (
@@ -43,6 +46,18 @@ export function LutPreviewCard({
             alt={name}
             className="w-full"
           />
+        )}
+        {eliminated && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <X className="size-20 text-white drop-shadow-lg" strokeWidth={3} />
+          </div>
+        )}
+        {isParent && (
+          <div className="absolute bottom-2 left-2 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white">
+              Previous pick
+            </span>
+          </div>
         )}
       </div>
 
@@ -70,14 +85,6 @@ export function LutPreviewCard({
         >
           <Eye className="size-3.5" />
         </button>
-      )}
-
-      {isParent && (
-        <div className="absolute bottom-8 left-2">
-          <span className="rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white">
-            Previous pick
-          </span>
-        </div>
       )}
 
       <div className="px-3 py-2">

@@ -67,6 +67,10 @@ export function useRefinement(initialPresets: LutPreset[]) {
     setHistory([])
   }, [initialPresets])
 
+  const setSelection = useCallback((ids: Set<string>) => {
+    setSelectedIds(ids)
+  }, [])
+
   return {
     round,
     presets,
@@ -76,5 +80,6 @@ export function useRefinement(initialPresets: LutPreset[]) {
     refine,
     goBack,
     resetToRound1,
+    setSelection,
   }
 }
