@@ -24,6 +24,31 @@ import { createPortraLut } from './presets/portra'
 import { createSepiaToneLut } from './presets/sepia-tone'
 import { createSolarizeLut } from './presets/solarize'
 import { createTropicalLut } from './presets/tropical'
+// Classic Film Stocks
+import { createKodakEktarLut } from './presets/kodak-ektar'
+import { createKodakGold200Lut } from './presets/kodak-gold-200'
+import { createKodakTriXLut } from './presets/kodak-tri-x'
+import { createFujiVelviaLut } from './presets/fuji-velvia'
+import { createFujiPro400HLut } from './presets/fuji-pro-400h'
+import { createCineStill800TLut } from './presets/cinestill-800t'
+// Fujifilm Film Simulations
+import { createClassicChromeLut } from './presets/classic-chrome'
+import { createEternaLut } from './presets/eterna'
+import { createClassicNegLut } from './presets/classic-neg'
+// Black & White Variations
+import { createHighKeyBWLut } from './presets/high-key-bw'
+import { createAcrosLut } from './presets/acros'
+// Retro / Era-Specific
+import { createPolaroidLut } from './presets/polaroid'
+import { createKodachromeLut } from './presets/kodachrome'
+import { createSeventiesRetroLut } from './presets/seventies-retro'
+// Modern Social Media / Editorial
+import { createLightAndAiryLut } from './presets/light-and-airy'
+import { createDarkAndMoodyLut } from './presets/dark-and-moody'
+import { createCleanMinimalLut } from './presets/clean-minimal'
+// Cinematic / Movie Looks
+import { createMatrixLut } from './presets/matrix'
+import { createDayForNightLut } from './presets/day-for-night'
 
 export const PRESET_LUTS: LutPreset[] = [
   createWarmSunsetLut(),
@@ -51,4 +76,29 @@ export const PRESET_LUTS: LutPreset[] = [
   createSepiaToneLut(),
   createSolarizeLut(),
   createTropicalLut(),
+  // Classic Film Stocks
+  createKodakEktarLut(),
+  createKodakGold200Lut(),
+  createKodakTriXLut(),
+  createFujiVelviaLut(),
+  createFujiPro400HLut(),
+  createCineStill800TLut(),
+  // Fujifilm Film Simulations
+  createClassicChromeLut(),
+  createEternaLut(),
+  createClassicNegLut(),
+  // Black & White Variations
+  createHighKeyBWLut(),
+  createAcrosLut(),
+  // Retro / Era-Specific
+  createPolaroidLut(),
+  createKodachromeLut(),
+  createSeventiesRetroLut(),
+  // Modern Social Media / Editorial
+  createLightAndAiryLut(),
+  createDarkAndMoodyLut(),
+  createCleanMinimalLut(),
+  // Cinematic / Movie Looks
+  createMatrixLut(),
+  createDayForNightLut(),
 ]
